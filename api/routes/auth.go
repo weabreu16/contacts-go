@@ -14,6 +14,7 @@ func (self AuthRoutes) Setup() {
 	api := self.handler.Gin.Group("/api")
 	{
 		api.POST("/auth", self.authController.RegisterUser)
+		api.POST("/auth/login", self.authController.LogIn)
 	}
 }
 

@@ -36,7 +36,25 @@ func (self AuthController) RegisterUser(ctx *gin.Context) {
 	auth, err := self.authService.Register(user)
 
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"user": auth.User, "token": auth.Token})
+}
+
+func (self AuthController) LogIn(ctx *gin.Context) {
+	loginUser := dtos.LoginUserDto{}
+
+	if err := ctx.BindJSON(&loginUser); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, lib.GetErrorMsgs(err))
+		return
+	}
+
+	auth, err := self.authService.LogIn(loginUser)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 

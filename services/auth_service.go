@@ -54,7 +54,7 @@ func (self AuthService) Register(user models.User) (auth dtos.Auth, err error) {
 
 func (self AuthService) LogIn(loginUser dtos.LoginUserDto) (auth dtos.Auth, err error) {
 	var user models.User
-	err = self.repository.Find(&user, "email = ", loginUser.Email).Error
+	err = self.repository.Find(&user, "email = ?", loginUser.Email).Error
 
 	if err != nil {
 		return auth, err

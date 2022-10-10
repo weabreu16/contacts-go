@@ -7,7 +7,9 @@ A Contacts RestFul API application using Golang Gin Framework.
 $ go mod download
 ```
 
-2. Start the application
+2. Rename ```.env.template``` file to ```.env``` and fill the fields
+
+3. Start the application
 ```bash
 $ go run .
 ```

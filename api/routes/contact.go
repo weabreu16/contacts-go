@@ -14,6 +14,7 @@ func (self ContactRoutes) Setup() {
 	api := self.handler.Gin.Group("/api")
 	{
 		api.GET("/contact/:id", self.contactController.GetContact)
+		api.POST("/contact", self.contactController.CreateContact)
 	}
 }
 

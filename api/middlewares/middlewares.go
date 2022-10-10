@@ -3,6 +3,7 @@ package middlewares
 import "go.uber.org/fx"
 
 var Module = fx.Options(
+	fx.Provide(NewCorsMiddleware),
 	fx.Provide(NewMiddlewares),
 )
 
@@ -12,8 +13,12 @@ type Middleware interface {
 
 type Middlewares []Middleware
 
-func NewMiddlewares() Middlewares {
-	return Middlewares{}
+func NewMiddlewares(
+	corsMiddleware CorsMiddleware,
+) Middlewares {
+	return Middlewares{
+		corsMiddleware,
+	}
 }
 
 func (self Middlewares) Setup() {

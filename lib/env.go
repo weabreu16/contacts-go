@@ -8,6 +8,7 @@ import (
 
 type Env struct {
 	DB_URL string `mapstructure:"DB_URL"`
+	PORT   string `mapstructure:"PORT"`
 }
 
 func NewEnv() Env {

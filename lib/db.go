@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"contacts-go/models"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -20,6 +21,8 @@ func NewDatabase(env Env) Database {
 	}
 
 	log.Println("Database connection established")
+
+	db.AutoMigrate(models.User{})
 
 	return Database{
 		DB: db,

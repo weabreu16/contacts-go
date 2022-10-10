@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"contacts-go/api/controllers"
+	"contacts-go/api/middlewares"
 	"contacts-go/api/routes"
 	"contacts-go/lib"
 	"contacts-go/repositories"
@@ -16,4 +17,5 @@ var CommonModules = fx.Options(
 	controllers.Module,
 	repositories.Module,
 	services.Module,
+	middlewares.Module,
 )

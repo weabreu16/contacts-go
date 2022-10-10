@@ -22,7 +22,7 @@ func NewDatabase(env Env) Database {
 
 	log.Println("Database connection established")
 
-	db.AutoMigrate(models.User{})
+	db.AutoMigrate(models.User{}, models.Contact{})
 
 	return Database{
 		DB: db,

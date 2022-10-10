@@ -10,7 +10,7 @@ type Contact struct {
 	Id        uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
 	Name      string    `json:"name"`
 	Phone     string    `json:"phone"`
-	UserId    string    `json:"userId"`
+	UserId    string    `json:"userId" gorm:"foreignKey;"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdateAt  time.Time `json:"updatedAt"`
 }

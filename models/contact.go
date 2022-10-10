@@ -1,9 +1,13 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	uuid "github.com/satori/go.uuid"
+)
 
 type Contact struct {
-	Id        string    `json:"id"`
+	Id        uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
 	Name      string    `json:"name"`
 	Phone     string    `json:"phone"`
 	UserId    string    `json:"userId"`

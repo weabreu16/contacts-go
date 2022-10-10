@@ -5,11 +5,12 @@ import (
 	"contacts-go/lib"
 )
 
-func RunServer() func(lib.Env, lib.RequestHandler, routes.Routes) {
+func RunServer() func(lib.Env, lib.RequestHandler, routes.Routes, lib.Database) {
 	return func(
 		env lib.Env,
 		router lib.RequestHandler,
 		routes routes.Routes,
+		database lib.Database,
 	) {
 		routes.Setup()
 

@@ -32,12 +32,13 @@ func (self ContactService) FindByUser(userId uuid.UUID) (contacts []models.Conta
 }
 
 func (self ContactService) Create(createContact models.Contact) (contact models.Contact, err error) {
+	return createContact, self.repository.Create(&createContact).Error
+}
 
-	err = self.repository.Create(&createContact).Error
+func (self ContactService) Update(updateContact models.Contact) (contact models.Contact, err error) {
+	return updateContact, self.repository.Save(&updateContact).Error
+}
 
-	if err != nil {
-		return contact, err
-	}
-
-	return createContact, err
+func (self ContactService) Delete(id uuid.UUID) (err error) {
+	return self.repository.Delete(models.Contact{}, id).Error
 }

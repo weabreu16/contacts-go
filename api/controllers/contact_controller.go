@@ -40,6 +40,25 @@ func (self ContactController) GetContact(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"contact": contact})
 }
 
+func (self ContactController) GetContacts(ctx *gin.Context) {
+	paramId := ctx.Param("userId")
+	id, err := uuid.FromString(paramId)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	contacts, err := self.contactService.FindByUser(id)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"contacts": contacts})
+}
+
 func (self ContactController) CreateContact(ctx *gin.Context) {
 	createContact := dtos.CreateContactDto{}
 
@@ -60,5 +79,41 @@ func (self ContactController) CreateContact(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
+	ctx.JSON(http.StatusCreated, gin.H{"contact": contact})
+}
+
+func (self ContactController) UpdateContact(ctx *gin.Context) {
+	updateContact := models.Contact{}
+
+	if err := ctx.BindJSON(&updateContact); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, lib.GetErrorMsgs(err))
+		return
+	}
+
+	contact, err := self.contactService.Update(updateContact)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{"contact": contact})
+}
+
+func (self ContactController) DeleteContact(ctx *gin.Context) {
+	paramId := ctx.Param("id")
+	id, err := uuid.FromString(paramId)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = self.contactService.Delete(id)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"result": "Contact deleted"})
 }

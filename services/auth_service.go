@@ -4,7 +4,6 @@ import (
 	"contacts-go/dtos"
 	"contacts-go/lib"
 	"contacts-go/models"
-	"contacts-go/repositories"
 	"errors"
 
 	"golang.org/x/crypto/bcrypt"
@@ -13,11 +12,11 @@ import (
 
 type AuthService struct {
 	env        lib.Env
-	repository repositories.UserRepository
+	repository lib.Repository
 	jwtService JWTService
 }
 
-func NewAuthService(env lib.Env, repository repositories.UserRepository, jwtService JWTService) AuthService {
+func NewAuthService(env lib.Env, repository lib.Repository, jwtService JWTService) AuthService {
 	return AuthService{
 		env:        env,
 		repository: repository,

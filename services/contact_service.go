@@ -1,18 +1,18 @@
 package services
 
 import (
+	"contacts-go/lib"
 	"contacts-go/models"
-	"contacts-go/repositories"
 
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
 type ContactService struct {
-	repository repositories.ContactRepository
+	repository lib.Repository
 }
 
-func NewContactService(repository repositories.ContactRepository) ContactService {
+func NewContactService(repository lib.Repository) ContactService {
 	return ContactService{
 		repository: repository,
 	}

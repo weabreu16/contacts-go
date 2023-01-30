@@ -1,6 +1,9 @@
 # Env
 .env
 
+# Databases
+postgres/
+
 # Binaries for programs and plugins
 *.exe
 *.exe~

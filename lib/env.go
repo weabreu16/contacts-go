@@ -11,6 +11,8 @@ type Env struct {
 	PORT        string `mapstructure:"PORT"`
 	JWT_SECRET  string `mapstructure:"JWT_SECRET"`
 	SALT_ROUNDS int    `mapstructure:"SALT_ROUNDS"`
+	DB_NAME     string `mapstructure:"DB_NAME"`
+	DB_PASSWORD string `mapstructure:"DB_PASSWORD"`
 }
 
 func NewEnv() Env {

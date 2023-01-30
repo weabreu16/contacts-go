@@ -8,9 +8,9 @@ import (
 
 type Contact struct {
 	Id        uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
-	Name      string    `json:"name"`
-	Phone     string    `json:"phone"`
-	UserId    string    `json:"userId" gorm:"foreignKey;"`
+	Name      *string   `json:"name" gorm:"not null;size:50;"`
+	Phone     *string   `json:"phone" gorm:"not null;size:15;"`
+	UserId    *string   `json:"userId" gorm:"foreignKey;"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }

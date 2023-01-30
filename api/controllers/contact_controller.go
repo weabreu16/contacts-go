@@ -55,7 +55,7 @@ func (self ContactController) GetContact(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"contact": contact})
+	ctx.JSON(http.StatusOK, contact)
 }
 
 func (self ContactController) CreateContact(ctx *gin.Context) {
@@ -73,7 +73,7 @@ func (self ContactController) CreateContact(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"contact": contact})
+	ctx.JSON(http.StatusCreated, contact)
 }
 
 func (self ContactController) UpdateContact(ctx *gin.Context) {
@@ -98,7 +98,7 @@ func (self ContactController) UpdateContact(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"contact": contact})
+	ctx.JSON(http.StatusOK, contact)
 }
 
 func (self ContactController) DeleteContact(ctx *gin.Context) {

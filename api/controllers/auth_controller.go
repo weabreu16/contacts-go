@@ -21,19 +21,14 @@ func NewAuthController(authService services.AuthService) AuthController {
 }
 
 func (self AuthController) RegisterUser(ctx *gin.Context) {
-	createUser := dtos.CreateUserDto{}
+	createUser := models.User{}
 
 	if err := ctx.BindJSON(&createUser); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, lib.GetErrorMsgs(err))
 		return
 	}
 
-	user := models.User{
-		Email:    createUser.Email,
-		Password: []byte(createUser.Password),
-	}
-
-	auth, err := self.authService.Register(user)
+	auth, err := self.authService.Register(createUser)
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, err.Error())

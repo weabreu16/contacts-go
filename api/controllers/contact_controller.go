@@ -3,6 +3,7 @@ package controllers
 import (
 	"contacts-go/dtos"
 	"contacts-go/lib"
+	"contacts-go/models"
 	"contacts-go/services"
 	"net/http"
 
@@ -18,6 +19,24 @@ func NewContactController(contactService services.ContactService) ContactControl
 	return ContactController{
 		contactService: contactService,
 	}
+}
+
+func (self ContactController) GetContacts(ctx *gin.Context) {
+	filters := models.Contact{}
+
+	if err := ctx.BindQuery(&filters); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+		return
+	}
+
+	contacts, err := self.contactService.Find(filters)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, contacts)
 }
 
 func (self ContactController) GetContact(ctx *gin.Context) {
@@ -37,25 +56,6 @@ func (self ContactController) GetContact(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"contact": contact})
-}
-
-func (self ContactController) GetContacts(ctx *gin.Context) {
-	paramId := ctx.Param("userId")
-	id, err := uuid.FromString(paramId)
-
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	contacts, err := self.contactService.FindByUser(id)
-
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"contacts": contacts})
 }
 
 func (self ContactController) CreateContact(ctx *gin.Context) {

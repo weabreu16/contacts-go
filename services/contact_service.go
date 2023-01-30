@@ -23,12 +23,12 @@ func (self ContactService) WithTrx(trxHandle *gorm.DB) ContactService {
 	return self
 }
 
-func (self ContactService) FindOne(id uuid.UUID) (contact models.Contact, err error) {
-	return contact, self.repository.Find(&contact, id).Error
+func (self ContactService) Find(filters models.Contact) (contacts []models.Contact, err error) {
+	return contacts, self.repository.Find(&contacts, &filters).Error
 }
 
-func (self ContactService) FindByUser(userId uuid.UUID) (contacts []models.Contact, err error) {
-	return contacts, self.repository.Find(&contacts, "userId = ?", userId).Error
+func (self ContactService) FindOne(id uuid.UUID) (contact models.Contact, err error) {
+	return contact, self.repository.Find(&contact, id).Error
 }
 
 func (self ContactService) Create(createContact models.Contact) (contact models.Contact, err error) {

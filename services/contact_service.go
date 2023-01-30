@@ -35,8 +35,14 @@ func (self ContactService) Create(createContact models.Contact) (contact models.
 	return createContact, self.repository.Create(&createContact).Error
 }
 
-func (self ContactService) Update(updateContact models.Contact) (contact models.Contact, err error) {
-	return updateContact, self.repository.Save(&updateContact).Error
+func (self ContactService) Update(id uuid.UUID, updateContact models.Contact) (contact models.Contact, err error) {
+	contact, err = self.FindOne(id)
+
+	if err != nil {
+		return contact, err
+	}
+
+	return contact, self.repository.Model(&contact).Updates(&updateContact).Error
 }
 
 func (self ContactService) Delete(id uuid.UUID) (err error) {

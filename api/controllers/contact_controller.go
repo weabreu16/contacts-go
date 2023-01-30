@@ -3,7 +3,6 @@ package controllers
 import (
 	"contacts-go/dtos"
 	"contacts-go/lib"
-	"contacts-go/models"
 	"contacts-go/services"
 	"net/http"
 
@@ -67,33 +66,36 @@ func (self ContactController) CreateContact(ctx *gin.Context) {
 		return
 	}
 
-	contact := models.Contact{
-		Name:   createContact.Name,
-		Phone:  createContact.Phone,
-		UserId: createContact.UserId,
-	}
-
-	contact, err := self.contactService.Create(contact)
+	contact, err := self.contactService.Create(createContact.ToModel())
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{"contact": contact})
 }
 
 func (self ContactController) UpdateContact(ctx *gin.Context) {
-	updateContact := models.Contact{}
+	paramId := ctx.Param("id")
+	updateContact := dtos.UpdateContactDto{}
+
+	id, err := uuid.FromString(paramId)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	if err := ctx.BindJSON(&updateContact); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, lib.GetErrorMsgs(err))
 		return
 	}
 
-	contact, err := self.contactService.Update(updateContact)
+	contact, err := self.contactService.Update(id, updateContact.ToModel())
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"contact": contact})

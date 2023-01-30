@@ -12,7 +12,7 @@ type Contact struct {
 	Phone     string    `json:"phone"`
 	UserId    string    `json:"userId" gorm:"foreignKey;"`
 	CreatedAt time.Time `json:"createdAt"`
-	UpdateAt  time.Time `json:"updatedAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (self Contact) TableName() string {

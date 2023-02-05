@@ -16,6 +16,8 @@ func (self ContactRoutes) Setup() {
 		api.GET("/contacts", self.contactController.GetContacts)
 		api.GET("/contacts/:id", self.contactController.GetContact)
 		api.POST("/contacts", self.contactController.CreateContact)
+		api.GET("/contacts/image/:id", self.contactController.GetImage)
+		api.POST("/contacts/:id/image", self.contactController.UploadImage)
 		api.PUT("/contacts/:id", self.contactController.UpdateContact)
 		api.DELETE("/contacts/:id", self.contactController.DeleteContact)
 	}

@@ -7,12 +7,13 @@ import (
 )
 
 type Env struct {
-	DB_URL      string `mapstructure:"DB_URL"`
-	PORT        string `mapstructure:"PORT"`
-	JWT_SECRET  string `mapstructure:"JWT_SECRET"`
-	SALT_ROUNDS int    `mapstructure:"SALT_ROUNDS"`
+	BUCKET_URL  string `mapstructure:"BUCKET_URL"`
 	DB_NAME     string `mapstructure:"DB_NAME"`
 	DB_PASSWORD string `mapstructure:"DB_PASSWORD"`
+	DB_URL      string `mapstructure:"DB_URL"`
+	JWT_SECRET  string `mapstructure:"JWT_SECRET"`
+	PORT        string `mapstructure:"PORT"`
+	SALT_ROUNDS int    `mapstructure:"SALT_ROUNDS"`
 }
 
 func NewEnv() Env {

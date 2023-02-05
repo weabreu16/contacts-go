@@ -1,20 +1,24 @@
 package services
 
 import (
+	"bytes"
 	"contacts-go/lib"
 	"contacts-go/models"
+	"mime/multipart"
 
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
 type ContactService struct {
-	repository lib.Repository
+	repository   lib.Repository
+	filesService FilesService
 }
 
-func NewContactService(repository lib.Repository) ContactService {
+func NewContactService(repository lib.Repository, filesService FilesService) ContactService {
 	return ContactService{
-		repository: repository,
+		repository:   repository,
+		filesService: filesService,
 	}
 }
 
@@ -47,4 +51,22 @@ func (self ContactService) Update(id uuid.UUID, updateContact models.Contact) (c
 
 func (self ContactService) Delete(id uuid.UUID) (err error) {
 	return self.repository.Delete(models.Contact{}, id).Error
+}
+
+func (self ContactService) UploadImage(id uuid.UUID, fileHeader *multipart.FileHeader) (contact models.Contact, err error) {
+	imageId, err := self.filesService.UploadFile(id.String(), fileHeader)
+	if err != nil {
+		return contact, err
+	}
+
+	contact, err = self.Update(id, models.Contact{ImageId: &imageId})
+	if err != nil {
+		return contact, err
+	}
+
+	return contact, nil
+}
+
+func (self ContactService) GetImage(id string) (*bytes.Buffer, error) {
+	return self.filesService.GetFile(id)
 }

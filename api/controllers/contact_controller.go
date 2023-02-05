@@ -119,3 +119,35 @@ func (self ContactController) DeleteContact(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"result": "Contact deleted"})
 }
+
+func (self ContactController) GetImage(ctx *gin.Context) {
+	paramId := ctx.Param("id")
+
+	image, err := self.contactService.GetImage(paramId)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error(), "image": image})
+		return
+	}
+
+	ctx.Writer.Write(image.Bytes())
+}
+
+func (self ContactController) UploadImage(ctx *gin.Context) {
+	paramId := ctx.Param("id")
+
+	id, err := uuid.FromString(paramId)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	fileHeader, err := ctx.FormFile("image")
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	contact, err := self.contactService.UploadImage(id, fileHeader)
+
+	ctx.JSON(http.StatusOK, contact)
+}

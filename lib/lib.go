@@ -7,4 +7,5 @@ var Module = fx.Options(
 	fx.Provide(NewRequestHandler),
 	fx.Provide(NewDatabase),
 	fx.Provide(NewRepository),
+	fx.Provide(NewFilesBucket),
 )

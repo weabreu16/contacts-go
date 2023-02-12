@@ -72,15 +72,14 @@ func (self AuthService) LogIn(loginUser dtos.LoginUserDto) (auth dtos.Auth, err 
 	return auth, nil
 }
 
-func (self AuthService) hashPassword(password []byte) (hashedPassword []byte, err error) {
-	hashedPassword, err = bcrypt.GenerateFromPassword(password, self.env.SALT_ROUNDS)
+func (self AuthService) hashPassword(password string) (string, error) {
+	result, err := bcrypt.GenerateFromPassword([]byte(password), self.env.SALT_ROUNDS)
 
-	return hashedPassword, err
+	return string(result), err
 }
 
-func (self AuthService) comparePassword(hashedPassword []byte, passwordString string) bool {
-	password := []byte(passwordString)
-	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
+func (self AuthService) comparePassword(hashedPassword, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 
 	return err == nil
 }

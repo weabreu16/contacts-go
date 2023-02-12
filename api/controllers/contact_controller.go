@@ -151,3 +151,9 @@ func (self ContactController) UploadImage(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, contact)
 }
+
+func (self ContactController) DeleteImage(ctx *gin.Context) {
+	imageId := ctx.Param("id")
+
+	self.contactService.RemoveImage(imageId)
+}

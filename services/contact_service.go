@@ -54,9 +54,20 @@ func (self ContactService) Delete(id uuid.UUID) (err error) {
 }
 
 func (self ContactService) UploadImage(id uuid.UUID, fileHeader *multipart.FileHeader) (contact models.Contact, err error) {
-	imageId, err := self.filesService.UploadFile(id.String(), fileHeader)
+	contact, err = self.FindOne(id)
 	if err != nil {
 		return contact, err
+	}
+
+	oldImageId := contact.ImageId
+
+	imageId, err := self.filesService.UploadFile(fileHeader.Filename, fileHeader)
+	if err != nil {
+		return contact, err
+	}
+
+	if oldImageId != nil {
+		self.filesService.RemoveFile(*oldImageId)
 	}
 
 	contact, err = self.Update(id, models.Contact{ImageId: &imageId})
@@ -69,4 +80,8 @@ func (self ContactService) UploadImage(id uuid.UUID, fileHeader *multipart.FileH
 
 func (self ContactService) GetImage(id string) (*bytes.Buffer, error) {
 	return self.filesService.GetFile(id)
+}
+
+func (self ContactService) RemoveImage(id string) error {
+	return self.filesService.RemoveFile(id)
 }

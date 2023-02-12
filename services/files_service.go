@@ -30,7 +30,7 @@ func (self FilesService) UploadFile(
 	defer file.Close()
 
 	id, err := self.bucket.UploadFromStream(filename, file)
-	return id.String(), err
+	return id.Hex(), err
 }
 
 func (self FilesService) GetFile(id string) (buf *bytes.Buffer, err error) {
@@ -46,4 +46,8 @@ func (self FilesService) GetFile(id string) (buf *bytes.Buffer, err error) {
 	}
 
 	return buf, nil
+}
+
+func (self FilesService) RemoveFile(id string) error {
+	return self.bucket.Delete(id)
 }

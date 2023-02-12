@@ -11,7 +11,6 @@ type Contact struct {
 	Name      string    `json:"name" form:"name" gorm:"not null;size:50;"`
 	Phone     string    `json:"phone" form:"phone" gorm:"not null;size:15;"`
 	ImageId   *string   `json:"imageId"`
-	ImageUrl  *string   `json:"imageUrl"`
 	UserId    string    `json:"userId" form:"userId" gorm:"foreignKey;"`
 	CreatedAt time.Time `json:"createdAt" form:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt" form:"updatedAt"`
